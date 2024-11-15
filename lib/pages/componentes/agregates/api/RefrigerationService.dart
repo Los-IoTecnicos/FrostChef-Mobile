@@ -39,19 +39,4 @@ class RefrigerationService {
   }
 
 
-  static Future<void> deleteRefrigerationById5() async {
-    try {
-      final response = await http.delete(
-        Uri.parse('$apiUrl/5'), // URL del equipo con id 5
-      );
-      if (response.statusCode != 200) {
-        throw Exception('Failed to delete refrigeration with id 5');
-      }
-    } catch (e) {
-      throw Exception('Error: $e');
-    }
-  }
-
-
-
 }

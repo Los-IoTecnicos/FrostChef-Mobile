@@ -45,36 +45,6 @@ class _EquipmentState extends State<Equipment> {
     }
   }
 
-  Future<void> _deleteEquipmentWithId5() async {
-    try {
-      setState(() {
-        _isLoading = true;
-      });
-
-      await RefrigerationService.deleteRefrigerationById5();
-
-      if (mounted) {
-        setState(() {
-          _refrigerationList.removeWhere((equipment) => equipment.id == 5);
-          _isLoading = false;
-        });
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Equipo con id 5 eliminado')),
-        );
-      }
-    } catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error al eliminar el equipo: $e')),
-        );
-      }
-    }
-  }
 
   void _showNewEquipmentDialog() {
     showDialog(
@@ -162,12 +132,7 @@ class _EquipmentState extends State<Equipment> {
             backgroundColor: Colors.blueAccent,
             child: const Icon(Icons.add),
           ),
-          const SizedBox(height: 16),
-          FloatingActionButton(
-            onPressed: _deleteEquipmentWithId5,
-            backgroundColor: Colors.redAccent,
-            child: const Icon(Icons.delete),
-          ),
+
         ],
       ),
     );
