@@ -7,7 +7,7 @@ import '../../componentes/CollaboratorsPage/CollaboratorsPage.dart';
 import '../../componentes/InventoriesPage/InventoriesPage.dart';
 import '../../componentes/MenuPage/MenuPage.dart';
 import '../../componentes/NotificationsPage/NotificationsPage.dart';
-import '../../componentes/TeamPage/Equipment.dart';
+import '../../componentes/TeamPage/TeamPage.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -15,12 +15,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 0; // Índice de la pestaña seleccionada
-  DateTime? _lastBackPressTime; // Tiempo del último toque
+  int _currentIndex = 0;
+  DateTime? _lastBackPressTime;
 
   final List<Widget> _pages = [
     MenuPage(),
-    Equipment(),
+    TeamPage(),
     InventoriesPage(),
     NotificationsPage(),
     CollaboratorsPage(),
@@ -77,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       // Vibrar y mostrar el Toast
       if (await Vibration.hasVibrator() ?? false) {
-        Vibration.vibrate(duration: 100); // Vibra durante 100 ms
+        Vibration.vibrate(duration: 100);
       }
       Fluttertoast.showToast(
         msg: "Presiona nuevamente para salir",
@@ -103,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Container(
             decoration: BoxDecoration(
-              shape: BoxShape.rectangle, // Cambiar a rectángulo para el fondo
+              shape: BoxShape.rectangle,
               color: isSelected ? Colors.blueAccent : Colors.transparent,
               borderRadius: BorderRadius.circular(5),
             ),

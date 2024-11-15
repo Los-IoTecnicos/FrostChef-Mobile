@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../agregates/dao/DatabaseHelper.dart';
-import '../agregates/dao/NotificationDatabaseHelper.dart';
 
 class MenuPage extends StatefulWidget {
   @override
@@ -12,7 +11,7 @@ class MenuPage extends StatefulWidget {
 class _MenuPageState extends State<MenuPage> {
   List<Map<String, dynamic>> _products = []; // Para almacenar los productos
   bool _isLoading = true; // Estado para manejar la carga
-  final dbHelper = NotificationDatabaseHelper();
+
   @override
   void initState() {
     super.initState();
@@ -316,72 +315,11 @@ class _MenuPageState extends State<MenuPage> {
   }
 
 
-  void _markProductAsExpiring(Map<String, dynamic> product) async {
-    try {
-      // Crear una copia mutable del mapa
-      final mutableProduct = Map<String, dynamic>.from(product);
-
-      setState(() {
-        mutableProduct['isExpiring'] = true;
-      });
-
-      // Crear el mapa de datos para la notificación
-      final notificationData = {
-        'name': mutableProduct['name'],
-        'quantity': mutableProduct['quantity'],
-        'expirationDate': mutableProduct['expirationDate'],
-      };
-
-      // Insertar la notificación
-      final result = await dbHelper.insertNotification({
-        'type': 'product',
-        'title': 'Producto próximo a vencer',
-        'message': 'El producto ${mutableProduct['name']} está próximo a vencer',
-        'timestamp': DateTime.now().toIso8601String(),
-        'data': notificationData.toString(),
-      });
-
-      if (result > 0) {
-        // Mostrar mensaje de éxito
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                Icon(Icons.check_circle, color: Colors.white),
-                SizedBox(width: 8),
-                Text('Notificación creada correctamente'),
-              ],
-            ),
-            backgroundColor: Colors.green,
-            duration: Duration(seconds: 2),
-          ),
-        );
-      } else {
-        throw Exception('No se pudo crear la notificación');
-      }
-
-      // Recargar los productos
-      await _loadProducts();
-
-    } catch (e) {
-      print('Error al marcar producto como vencido: $e');
-      // Mostrar mensaje de error
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Row(
-            children: [
-              Icon(Icons.error, color: Colors.white),
-              SizedBox(width: 8),
-              Expanded(
-                child: Text('Error al crear la notificación: ${e.toString()}'),
-              ),
-            ],
-          ),
-          backgroundColor: Colors.red,
-          duration: Duration(seconds: 3),
-        ),
-      );
-    }
+  void _markProductAsExpiring(Map<String, dynamic> product) {
+    setState(() {
+      product['isExpiring'] = true;
+    });
+    _loadProducts();
   }
 
   @override

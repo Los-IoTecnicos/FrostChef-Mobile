@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:frostchef/pages/routes/principal/HomeScreen.dart';
+import '../models/login/LoginScreen.dart';
+import '../models/login/RegisterScreen.dart';
 import '../componentes/CollaboratorsPage/CollaboratorsPage.dart';
 import '../componentes/InventoriesPage/InventoriesPage.dart';
 import '../componentes/MenuPage/MenuPage.dart';
 import '../componentes/NotificationsPage/NotificationsPage.dart';
-import '../componentes/TeamPage/Equipment.dart';
-import '../models/login/sign-in.dart';
-import '../models/login/sign-up.dart';
+import '../componentes/TeamPage/TeamPage.dart';
+import '../models/login/providers/CodeVerificationScreen.dart';
 
 class FrostchedApp extends StatelessWidget {
   @override
@@ -17,18 +18,14 @@ class FrostchedApp extends StatelessWidget {
       routes: {
         '/login': (context) => LoginScreen(),
         '/register': (context) => RegisterScreen(),
+        '/verification': (context) => CodeVerificationScreen(email: ''),
         '/home': (context) => HomeScreen(),
         '/menu': (context) => MenuPage(),
-        '/team': (context) => Equipment(),
+        '/team': (context) => TeamPage(),
         '/inventory': (context) => InventoriesPage(),
         '/notifications': (context) => NotificationsPage(),
         '/tecnicos': (context) => CollaboratorsPage(),
-
       },
     );
   }
 }
-
-
-
-
