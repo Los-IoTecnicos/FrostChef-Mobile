@@ -24,6 +24,9 @@ dependencies:
   vibration: ^2.0.1
   http: ^1.2.1
   intl: ^0.18.0
+  lottie: ^3.1.2
+  provider: ^6.0.0
+  connectivity: ^3.0.6
 
 
 dev_dependencies:
@@ -37,6 +40,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/images/
     - assets/images/login_frostChefPerson.webp
 
   # An image asset can refer to one or more resolution-specific "variants", see

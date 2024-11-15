@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import '../api/Refrigeration.dart';
@@ -8,6 +10,53 @@ class EquipmentCard extends StatelessWidget {
 
   const EquipmentCard({Key? key, required this.equipment}) : super(key: key);
 
+  Widget _buildImage(String imageUrl) {
+    if (imageUrl.startsWith('data:image')) {
+      // Es una imagen en base64
+      try {
+        return Image.memory(
+          base64Decode(imageUrl.split(',')[1]),
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            print('Error base64: $error');
+            return _buildNetworkImage(imageUrl); // Intenta cargar como URL si falla base64
+          },
+        );
+      } catch (e) {
+        print('Error decodificando base64: $e');
+        return _buildNetworkImage(imageUrl); // Intenta cargar como URL si falla base64
+      }
+    } else {
+      // Es una URL normal
+      return _buildNetworkImage(imageUrl);
+    }
+  }
+
+  Widget _buildNetworkImage(String url) {
+    return Image.network(
+      url,
+      fit: BoxFit.cover,
+      loadingBuilder: (context, child, loadingProgress) {
+        if (loadingProgress == null) return child;
+        return Center(
+          child: CircularProgressIndicator(
+            value: loadingProgress.expectedTotalBytes != null
+                ? loadingProgress.cumulativeBytesLoaded /
+                loadingProgress.expectedTotalBytes!
+                : null,
+          ),
+        );
+      },
+      errorBuilder: (context, error, stackTrace) {
+        print('Error cargando imagen de red: $error');
+        return Container(
+          color: Colors.grey[200],
+          child: Icon(Icons.error, size: 50, color: Colors.red),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -15,7 +64,7 @@ class EquipmentCard extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: Colors.grey.shade300, width: 1), // Added border
+        side: BorderSide(color: Colors.grey.shade300, width: 1),
       ),
       child: Container(
         width: double.infinity,
@@ -25,27 +74,7 @@ class EquipmentCard extends StatelessWidget {
               borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
               child: AspectRatio(
                 aspectRatio: 20/19,
-                child: Image.network(
-                  equipment.image,
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Center(
-                      child: CircularProgressIndicator(
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded /
-                            loadingProgress.expectedTotalBytes!
-                            : null,
-                      ),
-                    );
-                  },
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      color: Colors.grey[200],
-                      child: Icon(Icons.error, size: 50, color: Colors.red),
-                    );
-                  },
-                ),
+                child: _buildImage(equipment.image),
               ),
             ),
             Container(
@@ -95,7 +124,7 @@ class EquipmentCard extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 16),
-                  Center( // Centered button
+                  Center(
                     child: ElevatedButton(
                       onPressed: () {
                         showDialog(

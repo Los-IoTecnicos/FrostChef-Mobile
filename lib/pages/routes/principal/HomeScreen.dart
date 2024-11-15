@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:vibration/vibration.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../../componentes/CollaboratorsPage/CollaboratorsPage.dart';
+import '../../componentes/ProfileScreen/ProfileScreen.dart';
 import '../../componentes/InventoriesPage/InventoriesPage.dart';
 import '../../componentes/MenuPage/MenuPage.dart';
 import '../../componentes/NotificationsPage/NotificationsPage.dart';
@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Equipment(),
     InventoriesPage(),
     NotificationsPage(),
-    CollaboratorsPage(),
+    ProfileScreen(),
   ];
 
   @override
@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
             _buildBottomNavigationBarItem(Icons.group, 'Equipo', 1),
             _buildBottomNavigationBarItem(Icons.inventory, 'Inventarios', 2),
             _buildBottomNavigationBarItem(Icons.notifications, 'Notificaciones', 3),
-            _buildBottomNavigationBarItem(Icons.people, 'Técnicos', 4),
+            _buildBottomNavigationBarItem(Icons.people, 'Perfil', 4),
           ],
           currentIndex: _currentIndex,
           selectedItemColor: Colors.blueAccent,
